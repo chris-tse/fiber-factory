@@ -1,0 +1,19 @@
+{
+  "name": "fiber-factory",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "prototype": "bun prototypes/simulator-renderer-prototype.ts",
+    "prototype:bridge": "bun prototypes/factory-api-bridge-prototype.ts",
+    "prototype:effect-api": "bun prototypes/effect-shaped-api-prototype.ts",
+    "test": "bun test",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
