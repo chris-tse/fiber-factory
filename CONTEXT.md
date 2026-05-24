@@ -412,3 +412,9 @@ _Avoid_: Factory, layout, map, scenario
 - "API unlock" could imply arbitrary tutorial gating. Resolved: use a **Level-Scoped Factory API** derived from actual Factory capabilities.
 - "order type" mixed stable traits with workflow states. Resolved: use **Order Trait** for stable properties and **Order State** for workflow progress; rework is an **Order State**.
 - "standard" was listed like a type. Resolved: standard means an **Order** has no special **Order Traits**.
+
+## Project Notes
+
+- The next useful prototype is still a real Effect integration pressure test: install the current Effect beta package and exercise `Effect.gen`, `Effect.all`, `Effect.retry`, typed errors, defects, and service construction against the Factory API shape.
+- The previous attempt to install `effect` with Bun was inconclusive because corporate network or certificate restrictions caused `UNABLE_TO_GET_ISSUER_CERT_LOCALLY` registry failures. Treat that as an environment issue, not evidence against the real Effect API direction.
+- `~/code/fb-delete` is a nearby Bun project that already uses Effect and may be useful as syntax/reference context. It pins `effect`, `@effect/platform-bun`, and `@effect/vitest` to `4.0.0-beta.31`.
