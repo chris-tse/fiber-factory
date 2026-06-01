@@ -89,6 +89,82 @@ Current read:
 
 Delete or replace this once a real Effect bridge slice exists.
 
+## real-effect-api-prototype.ts
+
+Status: throwaway.
+
+Question: does the Factory API still feel production-shaped with actual Effect APIs, including `Effect.gen`, `Effect.all`, `Effect.retry`, typed errors, defects, and service construction?
+
+Run:
+
+```sh
+bun run prototype:real-effect-api
+```
+
+Useful focused runs:
+
+```sh
+bun prototypes/real-effect-api-prototype.ts happy
+bun prototypes/real-effect-api-prototype.ts retry
+bun prototypes/real-effect-api-prototype.ts concurrent
+bun prototypes/real-effect-api-prototype.ts stale
+```
+
+Current read:
+
+- Uses installed `effect@4.0.0-beta.70`; `repos/effect` is reference material only.
+- Real Effect keeps the flat, domain-only Factory API shape viable.
+- `Effect.retry(Schedule.recurs(2))` cleanly models retrying a recoverable Machine Failure without Factory-specific retry helpers.
+- `Schema.TaggedErrorClass` works for typed Factory API Failures, though production can still decide whether schema-backed classes are worth the ceremony.
+- `Effect.die` works for stale Active Order / Factory Program Defect cases when paired with a Run diagnostic sink.
+- `Context.Service` and `Layer` are a plausible service construction shape for the Factory API bridge.
+- Remaining integration risk is no longer Effect ergonomics; it is bridging a Run's Simulation Event list into visual playback and player feedback.
+
+Next useful prototype:
+
+```text
+Simulation Events -> Playback Projection / VisualState -> visual feedback
+```
+
+Use one or more event lists from the existing simulator/API prototypes before adding Monaco, sandboxing, or a full app shell.
+
+## visual-renderer
+
+Status: throwaway.
+
+Question: can a browser renderer replay Simulation Events into visual feedback while keeping `VisualState` a pure projection and animation interpolation downstream?
+
+Run:
+
+```sh
+bun run prototype:visual-renderer
+```
+
+Then open:
+
+```text
+http://localhost:3000
+```
+
+Current read:
+
+- The prototype uses a hardcoded Simulation Event timeline: `OrderCreated`, `OrderTaken`, `StepStarted`, `StepCompleted`, and `OrderShipped`.
+- `deriveVisualState(events, currentTime)` reconstructs Work Token workflow, Order State, station location, Machine state, and simple metrics from domain facts.
+- `derivePlaybackFrame(events, currentTime)` adds renderer-facing movement spans without making interpolation authoritative for Factory state.
+- The Dock acts as the Entry Station / Backlog home; Shipping acts as the Output Station; Cutter is the only Machine.
+- State Visuals are derived from Order State: the same Work Token changes from raw to cut after `StepCompleted`.
+- `OrderTaken` marks the Order active but leaves the Work Token at Dock; the first visible move happens when processing starts.
+- Connection movement is playback-only. It does not add Virtual Simulation Time, affect metrics, or delay Machine processing.
+- `StepStarted` can mark the Cutter working while playback animates the token from Dock to Cutter; that overlap is acceptable for this prototype.
+- `StepCompleted` and `OrderShipped` can share the same timestamp when Shipping is not a timed Machine. Playback still animates the token to Shipping after the event.
+- Playback supports play, pause, scrub, and reset over Virtual Simulation Time.
+
+Next useful read:
+
+- Use generated Simulation Events from the existing simulator/API prototypes as the next input source without changing the renderer contract.
+- Keep Station Queue, Monaco, sandboxing, and full level UI out until this event-to-feedback loop feels clear.
+- The next prototype should probably replace the hardcoded event list with generated events or introduce a minimal Run result shell before broadening the UI.
+
 ## factory-api-bridge-prototype.ts
 
 Status: throwaway.

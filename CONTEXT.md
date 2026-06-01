@@ -415,6 +415,13 @@ _Avoid_: Factory, layout, map, scenario
 
 ## Project Notes
 
-- The next useful prototype is still a real Effect integration pressure test: install the current Effect beta package and exercise `Effect.gen`, `Effect.all`, `Effect.retry`, typed errors, defects, and service construction against the Factory API shape.
-- The previous attempt to install `effect` with Bun was inconclusive because corporate network or certificate restrictions caused `UNABLE_TO_GET_ISSUER_CERT_LOCALLY` registry failures. Treat that as an environment issue, not evidence against the real Effect API direction.
-- `~/code/fb-delete` is a nearby Bun project that already uses Effect and may be useful as syntax/reference context. It pins `effect`, `@effect/platform-bun`, and `@effect/vitest` to `4.0.0-beta.31`.
+- The real Effect integration pressure test now exists as `prototypes/real-effect-api-prototype.ts` and runs through `bun run prototype:real-effect-api`.
+- The prototype uses installed `effect@4.0.0-beta.70` and exercises `Effect.gen`, `Effect.all`, `Effect.retry`, typed errors, defects, and service construction against the Factory API shape.
+- The real Effect API direction remains viable: recoverable **Machine Failures** compose with normal Effect retry/scheduling, stale **Active Order** use can surface as an Effect defect plus Run diagnostic, and a flat domain-only **Factory API** still reads production-shaped.
+- The initial visual renderer prototype now exists under `prototypes/visual-renderer` and runs through `bun run prototype:visual-renderer`.
+- The visual renderer direction is viable: a pure `VisualState` projection can reconstruct Work Tokens, Machine state, simple metrics, and renderer-facing movement spans from Simulation Events.
+- Movement between Stations remains playback-only for the current prototype scope. It should not add Virtual Simulation Time, affect Pass Objective evaluation, or require Factory API changes unless a later Level intentionally makes transport a mechanic.
+- The next major bridge to prove is replacing the hardcoded event list with generated Simulation Events while preserving the renderer contract.
+- Do not add Monaco, sandboxing, or a full playable level before generated events can feed the visual renderer clearly enough to support playback, metrics, and debugging feedback.
+- `repos/effect` is reference material only. Do not import directly from the subtree for Fiber Factory runtime or prototype code.
+- Because `repos/effect` is a subtreed upstream source checkout, project verification should avoid treating it as Fiber Factory source or tests; `tsconfig.json` excludes `repos`, and the default test script targets Fiber Factory prototype tests.

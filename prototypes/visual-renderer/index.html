@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fiber Factory Visual Renderer Prototype</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script type="module" src="./renderer.ts"></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="factory-stage" aria-label="Factory playback">
+        <svg class="connections" viewBox="0 0 1000 360" aria-hidden="true">
+          <path d="M220 176 C 330 176, 380 176, 492 176" />
+          <path d="M600 176 C 710 176, 760 176, 870 176" />
+        </svg>
+
+        <div class="station station-dock" data-station="dock">
+          <div class="station-label">Dock</div>
+          <div class="station-role">Entry Station</div>
+        </div>
+
+        <div class="station station-cutter" data-station="cutter-1">
+          <div class="machine-light" data-machine-light="cutter-1"></div>
+          <div class="station-label">Cutter</div>
+          <div class="station-role" data-machine-label="cutter-1">Idle</div>
+        </div>
+
+        <div class="station station-shipping" data-station="shipping">
+          <div class="station-label">Shipping</div>
+          <div class="station-role">Output Station</div>
+        </div>
+
+        <div class="token-layer" data-token-layer></div>
+      </section>
+
+      <section class="control-strip" aria-label="Playback controls">
+        <button type="button" class="icon-button primary" data-play-toggle aria-label="Play">▶</button>
+        <button type="button" class="icon-button" data-reset aria-label="Reset">↺</button>
+        <label class="scrubber">
+          <span data-time-label>t=0.0</span>
+          <input data-scrubber type="range" min="0" max="9" value="0" step="0.01" />
+        </label>
+        <div class="metrics" aria-label="Metrics">
+          <span>Backlog <strong data-metric="backlog">0</strong></span>
+          <span>Active <strong data-metric="active">0</strong></span>
+          <span>Shipped <strong data-metric="shipped">0</strong></span>
+        </div>
+      </section>
+
+      <section class="timeline" aria-label="Simulation event timeline" data-event-list></section>
+    </main>
+  </body>
+</html>

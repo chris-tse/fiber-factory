@@ -7,8 +7,13 @@
     "prototype": "bun prototypes/simulator-renderer-prototype.ts",
     "prototype:bridge": "bun prototypes/factory-api-bridge-prototype.ts",
     "prototype:effect-api": "bun prototypes/effect-shaped-api-prototype.ts",
-    "test": "bun test",
+    "prototype:real-effect-api": "bun prototypes/real-effect-api-prototype.ts",
+    "prototype:visual-renderer": "bun --hot prototypes/visual-renderer/server.ts",
+    "test": "bun test prototypes",
     "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "effect": "4.0.0-beta.70"
   },
   "devDependencies": {
     "@types/bun": "latest"

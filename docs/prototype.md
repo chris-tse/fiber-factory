@@ -11,6 +11,7 @@ Core rules:
 - Use Simulation Events as timestamped domain facts.
 - Use Virtual Simulation Time from the first hardcoded timeline.
 - Treat Connections as infinitely fast in simulation; Station-to-Station movement is playback animation only.
+- Do not add transport duration to Virtual Simulation Time unless a later Level intentionally makes transport a mechanic.
 - Keep Work Token identity persistent while allowing State Visuals to change with Order State.
 - Derive metrics from Simulation Events rather than emitting `MetricChanged` events.
 - Keep the Factory Program, Factory API, Effect runtime, editor, and sandbox out of Prototype 1.
@@ -116,6 +117,10 @@ Do not include `StepQueued` until queue behavior is exercised by a later prototy
 
 `OrderTaken` is a real Simulation Event, not a renderer convenience. It records an Order leaving the Backlog and entering an active Factory Program workflow. For Prototype 1, it may be mostly semantic and can mark the Work Token active; the first required visible movement still happens on `StepStarted`.
 
+`StepStarted` may start the Machine's working state at the same Virtual Simulation Time that playback begins moving the Work Token toward that Machine. That overlap is acceptable in Prototype 1 because Connection movement is visual playback, not simulated transport. Do not delay the Step or add transport events just to make the animation finish before processing begins.
+
+`OrderShipped` may happen at the same Virtual Simulation Time as the final `StepCompleted` when Shipping has no timing, capacity, or failure behavior. The Work Token can still animate to Shipping after the event as playback-only visual feedback.
+
 Example event shape:
 
 ```ts
@@ -162,6 +167,7 @@ type SimEvent =
 - Show minimal State Visuals: the same Work Token should visibly change from raw to cut after `StepCompleted`.
 - Keep State Visual changes derived from Order State, not from sprite-specific events.
 - Keep Connections infinitely fast in simulation; any movement along them is playback animation only.
+- Keep movement spans in the Playback Projection; do not add movement duration to metrics or Pass Objective evaluation.
 
 ### VisualState Requirements
 
@@ -169,6 +175,7 @@ type SimEvent =
 - Prefer a shape like `deriveVisualState(events, currentTime): VisualState` for Prototype 1.
 - Do not make the renderer's mutable playback state authoritative for Order location, Machine state, Order State, or fulfillment.
 - Keep animation interpolation separate from the domain facts in `VisualState`.
+- `VisualState` may reflect the authoritative post-event state immediately while playback interpolation still shows a token moving toward that state.
 
 ### Playback Requirements
 
@@ -184,6 +191,7 @@ type SimEvent =
 - `StepStarted` moves the Work Token to Cutter and marks Cutter working.
 - `StepCompleted` marks Cutter idle and changes the Work Token from raw to cut.
 - `OrderShipped` moves the Work Token to Shipping or removes it as fulfilled.
+- If `StepCompleted` and `OrderShipped` share a timestamp, playback still gives the player readable visual feedback without adding Virtual Simulation Time.
 - The renderer is event-driven enough that the hardcoded timeline can later be replaced by generated simulation events.
 
 ## Later Prototype Sequence
